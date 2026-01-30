@@ -1,7 +1,10 @@
 import tensorflow as tf
+from tensorflow.keras.layers import LSTM, Dense, Input
+from tensorflow.keras.models import Model
+
 
 class AttentionLayer(tf.keras.layers.Layer):
-    def __init__(self, **kwargs):   # IMPORTANT FIX
+    def __init__(self, **kwargs):
         super(AttentionLayer, self).__init__(**kwargs)
 
     def build(self, input_shape):
@@ -29,7 +32,18 @@ class AttentionLayer(tf.keras.layers.Layer):
         output = tf.reduce_sum(inputs * tf.expand_dims(alphas, -1), axis=1)
         return output
 
-    # IMPORTANT FOR SAVING & LOADING
     def get_config(self):
         config = super().get_config()
         return config
+
+
+# ✅ THIS FUNCTION WAS MISSING
+def build_attention_model(input_shape):
+    inputs = Input(shape=input_shape)
+    x = LSTM(64, return_sequences=True)(inputs)
+    x = AttentionLayer()(x)
+    outputs = Dense(1)(x)
+
+    model = Model(inputs, outputs)
+    model.compile(optimizer="adam", loss="mse")
+    return model
