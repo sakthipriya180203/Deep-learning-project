@@ -1,13 +1,15 @@
 import matplotlib.pyplot as plt
-import tensorflow as tf
 from dataset import load_data
-from model_attention import build_attention_model
+from model_attention import build_attention
 
+X_train, X_test, y_train, y_test = load_data()
 
-X_train, X_test, y_train, y_test, _ = load_data()
-model = build_attention_model(X_train.shape[1:])
+model, weight_model = build_attention()
 model.load_weights("attention_model.h5")
 
+weights = weight_model.predict(X_test[:1])[0]
 
-# Get attention weights manually (advanced step for report)
-print("Attention visualization requires custom extraction - mention conceptually in report")
+plt.imshow(weights.reshape(1,-1), aspect='auto')
+plt.colorbar()
+plt.title("Attention Weights")
+plt.show()

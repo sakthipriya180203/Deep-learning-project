@@ -2,23 +2,22 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+WINDOW = 20
 
-def create_sequences(data, seq_len=50):
-    X, y = [], []
-    for i in range(len(data) - seq_len):
-        X.append(data[i:i+seq_len])
-        y.append(data[i+seq_len, 0]) # predict f1
-    return np.array(X), np.array(y)
-
-
-def load_data(seq_len=50):
+def load_data():
     df = pd.read_csv("timeseries.csv")
+
+    
     scaler = MinMaxScaler()
-    data = scaler.fit_transform(df.values)
+    scaled = scaler.fit_transform(df)
 
+    X, y = [], []
+    for i in range(len(scaled)-WINDOW):
+        X.append(scaled[i:i+WINDOW])
+        y.append(scaled[i+WINDOW,0])
 
-    X, y = create_sequences(data, seq_len)
-    split = int(len(X) * 0.8)
+    X = np.array(X)
+    y = np.array(y)
 
-
-    return X[:split], X[split:], y[:split], y[split:], scaler
+    split = int(0.8*len(X))
+    return X[:split], X[split:], y[:split], y[split:]

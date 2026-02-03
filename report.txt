@@ -1,0 +1,19 @@
+Dataset:
+Synthetic multivariate time series with trend and two seasonalities.
+
+Models:
+
+1. Baseline LSTM
+2. LSTM with Attention
+
+Tuning:
+Optuna optimized units and learning rate.
+
+Results:
+Attention model achieved lower RMSE and MAE than baseline.
+
+Attention Interpretation:
+Heatmap shows higher focus on recent timesteps and seasonal peaks.
+
+Conclusion:
+Attention improves forecasting accuracy by learning temporal importance.

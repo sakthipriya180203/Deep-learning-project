@@ -1,34 +1,17 @@
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error
-from tensorflow.keras.models import load_model
 from dataset import load_data
-from model_attention import AttentionLayer   # IMPORTANT LINE
+import tensorflow as tf
 
-# Load data
-X_train, X_test, y_train, y_test, _ = load_data()
+X_train, X_test, y_train, y_test = load_data()
 
-# Load models with custom layer
-baseline = load_model("baseline_model.h5", compile=False)
+baseline = tf.keras.models.load_model("baseline_model.h5")
+attention = tf.keras.models.load_model("attention_model.h5")
 
-attention = load_model(
-    "attention_model.h5",
-    custom_objects={"AttentionLayer": AttentionLayer},
-    compile=False
-)
-
-# Predictions
 pred_base = baseline.predict(X_test)
-pred_attn = attention.predict(X_test)
+pred_att = attention.predict(X_test)
 
-# Metrics
-def metrics(y, p):
-    rmse = np.sqrt(mean_squared_error(y, p))
-    mae = mean_absolute_error(y, p)
-    mape = np.mean(np.abs((y - p) / y)) * 100
-    return rmse, mae, mape
-
-print("Baseline Model Metrics:")
-print("RMSE, MAE, MAPE =", metrics(y_test, pred_base))
-
-print("\nAttention Model Metrics:")
-print("RMSE, MAE, MAPE =", metrics(y_test, pred_attn))
+print("Baseline RMSE:", np.sqrt(mean_squared_error(y_test, pred_base)))
+print("Attention RMSE:", np.sqrt(mean_squared_error(y_test, pred_att)))
+print("Baseline MAE:", mean_absolute_error(y_test, pred_base))
+print("Attention MAE:", mean_absolute_error(y_test, pred_att))

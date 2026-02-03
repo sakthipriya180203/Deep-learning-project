@@ -1,8 +1,0 @@
-myvenv/
-__pycache__/
-*.pyc
-*.h5
-*.csv
-*.dll
-*.exe
-*.zip

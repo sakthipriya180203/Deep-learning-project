@@ -1,18 +1,17 @@
 from dataset import load_data
 from model_baseline import build_baseline
-from model_attention import build_attention_model
+from model_attention import build_attention
 
+X_train, X_test, y_train, y_test = load_data()
 
-X_train, X_test, y_train, y_test, _ = load_data()
+baseline = build_baseline()
+baseline.fit(X_train, y_train, epochs=10, batch_size=64)
 
-
-# Baseline
-baseline = build_baseline(X_train.shape[1:])
-baseline.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
 baseline.save("baseline_model.h5")
 
+att_model, _ = build_attention()
+att_model.fit(X_train, y_train, epochs=10, batch_size=64)
 
-# Attention Model
-attention = build_attention_model(X_train.shape[1:])
-attention.fit(X_train, y_train, epochs=10, batch_size=32, validation_split=0.2)
-attention.save("attention_model.h5")
+att_model.save("attention_model.h5")
+
+print("Models saved!")
