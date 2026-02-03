@@ -1,23 +1,12 @@
 import numpy as np
-import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
-WINDOW = 20
+def load_data(test_size=0.2):
+    X = np.load("X.npy")
+    y = np.load("y.npy")
 
-def load_data():
-    df = pd.read_csv("timeseries.csv")
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size, random_state=42
+    )
 
-    
-    scaler = MinMaxScaler()
-    scaled = scaler.fit_transform(df)
-
-    X, y = [], []
-    for i in range(len(scaled)-WINDOW):
-        X.append(scaled[i:i+WINDOW])
-        y.append(scaled[i+WINDOW,0])
-
-    X = np.array(X)
-    y = np.array(y)
-
-    split = int(0.8*len(X))
-    return X[:split], X[split:], y[:split], y[split:]
+    return X_train, y_train, X_test, y_test

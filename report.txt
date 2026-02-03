@@ -1,19 +1,22 @@
+Advanced Time Series Forecasting with Attention
+
 Dataset:
-Synthetic multivariate time series with trend and two seasonalities.
+Synthetic series with trend, seasonality and noise.
 
 Models:
+1) Baseline LSTM
+2) Attention LSTM
 
-1. Baseline LSTM
-2. LSTM with Attention
+Attention:
+Learns importance weights over time steps.
+Helps focus on recent/seasonal values.
 
-Tuning:
-Optuna optimized units and learning rate.
+Hyperparameter tuning:
+Optuna used to optimize batch size.
 
-Results:
-Attention model achieved lower RMSE and MAE than baseline.
+Metrics:
+RMSE, MAE, MAPE computed on test set.
 
-Attention Interpretation:
-Heatmap shows higher focus on recent timesteps and seasonal peaks.
-
-Conclusion:
-Attention improves forecasting accuracy by learning temporal importance.
+Result:
+Attention model performed better than baseline with lower error.
+Attention visualization shows higher weights on recent timesteps.
